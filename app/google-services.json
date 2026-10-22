@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "569667060250",
+    "project_id": "berber-ffb3c",
+    "storage_bucket": "berber-ffb3c.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:569667060250:android:3205490ac65085530707a3",
+        "android_client_info": {
+          "package_name": "com.m.berber"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDah8PheZKLpXSGEqdRml9jZlYZQ2vurAk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

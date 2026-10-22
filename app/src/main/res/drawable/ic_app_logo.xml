@@ -1,0 +1,74 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="120dp"
+    android:height="120dp"
+    android:viewportWidth="100"
+    android:viewportHeight="100">
+
+    <!-- Shield / Circular Badge Background -->
+    <path
+        android:fillColor="#1E293B"
+        android:pathData="M50,4 C24.6,4 4,24.6 4,50 C4,75.4 24.6,96 50,96 C75.4,96 96,75.4 96,50 C96,24.6 75.4,4 50,4 Z" />
+
+    <!-- Gold Outer Border Ring -->
+    <path
+        android:fillColor="#00000000"
+        android:strokeColor="#F59E0B"
+        android:strokeWidth="3"
+        android:pathData="M50,8 C26.8,8 8,26.8 8,50 C8,73.2 26.8,92 50,92 C73.2,92 92,73.2 92,50 C92,26.8 73.2,8 50,8 Z" />
+
+    <!-- Barber Scissors Left Blade -->
+    <path
+        android:fillColor="#E2E8F0"
+        android:pathData="M32,25 C31,25 30,26 30,27 C30,38 42,50 48,55 L52,50 C46,45 34,33 34,27 C34,26 33,25 32,25 Z" />
+
+    <!-- Barber Scissors Right Blade -->
+    <path
+        android:fillColor="#E2E8F0"
+        android:pathData="M68,25 C67,25 66,26 66,27 C66,33 54,45 48,50 L52,55 C58,50 70,38 70,27 C70,26 69,25 68,25 Z" />
+
+    <!-- Scissors Handle Loops -->
+    <path
+        android:fillColor="#00000000"
+        android:strokeColor="#F59E0B"
+        android:strokeWidth="3.5"
+        android:pathData="M26,22 C22.7,22 20,24.7 20,28 C20,31.3 22.7,34 26,34 C29.3,34 32,31.3 32,28 C32,24.7 29.3,22 26,22 Z" />
+
+    <path
+        android:fillColor="#00000000"
+        android:strokeColor="#F59E0B"
+        android:strokeWidth="3.5"
+        android:pathData="M74,22 C70.7,22 68,24.7 68,28 C68,31.3 70.7,34 74,34 C77.3,34 80,31.3 80,28 C80,24.7 77.3,22 74,22 Z" />
+
+    <!-- Barber Pole Cylinder -->
+    <path
+        android:fillColor="#0284C7"
+        android:pathData="M44,45 L56,45 L56,80 L44,80 Z" />
+
+    <!-- Red & White Stripes on Barber Pole -->
+    <path
+        android:fillColor="#DC2626"
+        android:pathData="M44,48 L56,54 L56,60 L44,54 Z" />
+
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M44,58 L56,64 L56,70 L44,64 Z" />
+
+    <path
+        android:fillColor="#DC2626"
+        android:pathData="M44,68 L56,74 L56,80 L44,74 Z" />
+
+    <!-- Gold Pole Caps -->
+    <path
+        android:fillColor="#F59E0B"
+        android:pathData="M42,42 L58,42 L56,45 L44,45 Z" />
+
+    <path
+        android:fillColor="#F59E0B"
+        android:pathData="M42,83 L58,83 L56,80 L44,80 Z" />
+
+    <!-- Decorative Stars -->
+    <path
+        android:fillColor="#F59E0B"
+        android:pathData="M50,15 L51.5,19.5 L56,19.5 L52.3,22.2 L53.8,26.7 L50,24 L46.2,26.7 L47.7,22.2 L44,19.5 L48.5,19.5 Z" />
+
+</vector>

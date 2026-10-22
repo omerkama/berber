@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+
+    <!-- Primary Theme Colors -->
+    <color name="primary">#1E293B</color>
+    <color name="primary_dark">#0F172A</color>
+    <color name="primary_light">#334155</color>
+    <color name="accent">#0284C7</color>
+    <color name="accent_light">#E0F2FE</color>
+
+    <!-- Backgrounds -->
+    <color name="bg_main">#F8FAFC</color>
+    <color name="card_bg">#FFFFFF</color>
+
+    <!-- Status Colors -->
+    <color name="status_pending">#D97706</color>
+    <color name="status_pending_bg">#FEF3C7</color>
+    <color name="status_approved">#16A34A</color>
+    <color name="status_approved_bg">#DCFCE7</color>
+    <color name="status_rejected">#DC2626</color>
+    <color name="status_rejected_bg">#FEE2E2</color>
+    <color name="status_completed">#2563EB</color>
+    <color name="status_completed_bg">#DBEAFE</color>
+    <color name="status_cancelled">#64748B</color>
+    <color name="status_cancelled_bg">#F1F5F9</color>
+
+    <!-- Text Colors -->
+    <color name="text_primary">#0F172A</color>
+    <color name="text_secondary">#64748B</color>
+    <color name="text_hint">#94A3B8</color>
+    <color name="divider">#E2E8F0</color>
+</resources>
