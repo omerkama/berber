@@ -2,18 +2,16 @@ package com.m.berber.auth;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.m.berber.models.Appointment;
-import com.m.berber.models.BarberShop;
 import com.m.berber.models.ServiceItem;
 import com.m.berber.models.TimeSlot;
 import com.m.berber.models.User;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class FirebaseHelper {
@@ -44,6 +42,11 @@ public class FirebaseHelper {
 
     public interface OnSlotsFetchListener {
         void onSuccess(List<TimeSlot> slots);
+        void onFailure(String error);
+    }
+
+    public interface OnServicesFetchListener {
+        void onSuccess(List<ServiceItem> services);
         void onFailure(String error);
     }
 
@@ -116,7 +119,9 @@ public class FirebaseHelper {
                     List<User> barbers = new ArrayList<>();
                     for (QueryDocumentSnapshot doc : querySnapshot) {
                         User barber = doc.toObject(User.class);
-                        barbers.add(barber);
+                        if (barber != null) {
+                            barbers.add(barber);
+                        }
                     }
                     listener.onSuccess(barbers);
                 })
@@ -145,11 +150,6 @@ public class FirebaseHelper {
                     listener.onSuccess(new ArrayList<>());
                 })
                 .addOnFailureListener(e -> listener.onFailure(e.getMessage()));
-    }
-
-    public interface OnServicesFetchListener {
-        void onSuccess(List<ServiceItem> services);
-        void onFailure(String error);
     }
 
     public static class BarberShopServicesWrapper {
@@ -194,6 +194,8 @@ public class FirebaseHelper {
                             slots.add(slot);
                         }
                     }
+                    // Sort slots by time
+                    Collections.sort(slots, (s1, s2) -> s1.getTime().compareTo(s2.getTime()));
                     listener.onSuccess(slots);
                 })
                 .addOnFailureListener(e -> listener.onFailure(e.getMessage()));
@@ -221,6 +223,8 @@ public class FirebaseHelper {
                         Appointment app = doc.toObject(Appointment.class);
                         if (app != null) list.add(app);
                     }
+                    // Sort client-side by createdAt descending
+                    Collections.sort(list, (a1, a2) -> Long.compare(a2.getCreatedAt(), a1.getCreatedAt()));
                     listener.onSuccess(list);
                 })
                 .addOnFailureListener(e -> listener.onFailure(e.getMessage()));
@@ -237,6 +241,8 @@ public class FirebaseHelper {
                         Appointment app = doc.toObject(Appointment.class);
                         if (app != null) list.add(app);
                     }
+                    // Sort client-side by createdAt descending
+                    Collections.sort(list, (a1, a2) -> Long.compare(a2.getCreatedAt(), a1.getCreatedAt()));
                     listener.onSuccess(list);
                 })
                 .addOnFailureListener(e -> listener.onFailure(e.getMessage()));

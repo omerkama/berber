@@ -61,14 +61,7 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        firebaseHelper = FirebaseHelper.getInstance();
-
-        // Check if user is already logged in
-        if (firebaseHelper.isUserLoggedIn()) {
-            checkUserRoleAndNavigate();
-            return;
-        }
-
+        // Bind all UI views first to prevent NullPointerException
         etEmail = findViewById(R.id.etEmail);
         etPassword = findViewById(R.id.etPassword);
         btnLogin = findViewById(R.id.btnLogin);
@@ -77,8 +70,16 @@ public class LoginActivity extends AppCompatActivity {
         tvRegisterRedirect = findViewById(R.id.tvRegisterRedirect);
         progressBar = findViewById(R.id.progressBar);
 
+        firebaseHelper = FirebaseHelper.getInstance();
+
         // Setup Google Sign In
         setupGoogleSignIn();
+
+        // Check if user is already logged in
+        if (firebaseHelper.isUserLoggedIn()) {
+            checkUserRoleAndNavigate();
+            return;
+        }
 
         btnLogin.setOnClickListener(v -> performLogin());
         btnGoogleLogin.setOnClickListener(v -> launchGoogleSignIn());
@@ -102,14 +103,14 @@ public class LoginActivity extends AppCompatActivity {
             return;
         }
 
-        progressBar.setVisibility(View.VISIBLE);
-        btnLogin.setEnabled(false);
+        if (progressBar != null) progressBar.setVisibility(View.VISIBLE);
+        if (btnLogin != null) btnLogin.setEnabled(false);
 
         FirebaseAuth.getInstance().signInWithEmailAndPassword(email, password)
                 .addOnSuccessListener(authResult -> checkUserRoleAndNavigate())
                 .addOnFailureListener(e -> {
-                    progressBar.setVisibility(View.GONE);
-                    btnLogin.setEnabled(true);
+                    if (progressBar != null) progressBar.setVisibility(View.GONE);
+                    if (btnLogin != null) btnLogin.setEnabled(true);
                     handleAuthError(e);
                 });
     }
@@ -139,7 +140,6 @@ public class LoginActivity extends AppCompatActivity {
                             if (account != null && account.getIdToken() != null) {
                                 firebaseAuthWithGoogle(account.getIdToken());
                             } else if (account != null) {
-                                // If idToken is null (e.g. webClientId not set), handle signed in Google account
                                 checkUserRoleAndNavigate();
                             }
                         } catch (ApiException e) {
@@ -156,12 +156,12 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void firebaseAuthWithGoogle(String idToken) {
-        progressBar.setVisibility(View.VISIBLE);
+        if (progressBar != null) progressBar.setVisibility(View.VISIBLE);
         AuthCredential credential = GoogleAuthProvider.getCredential(idToken, null);
         FirebaseAuth.getInstance().signInWithCredential(credential)
                 .addOnSuccessListener(authResult -> checkUserRoleAndNavigate())
                 .addOnFailureListener(e -> {
-                    progressBar.setVisibility(View.GONE);
+                    if (progressBar != null) progressBar.setVisibility(View.GONE);
                     handleAuthError(e);
                 });
     }
@@ -188,7 +188,7 @@ public class LoginActivity extends AppCompatActivity {
                 return;
             }
 
-            progressBarPhone.setVisibility(View.VISIBLE);
+            if (progressBarPhone != null) progressBarPhone.setVisibility(View.VISIBLE);
             btnSendCode.setEnabled(false);
 
             PhoneAuthOptions options = PhoneAuthOptions.newBuilder(FirebaseAuth.getInstance())
@@ -198,7 +198,7 @@ public class LoginActivity extends AppCompatActivity {
                     .setCallbacks(new PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
                         @Override
                         public void onVerificationCompleted(@NonNull PhoneAuthCredential credential) {
-                            progressBarPhone.setVisibility(View.GONE);
+                            if (progressBarPhone != null) progressBarPhone.setVisibility(View.GONE);
                             FirebaseAuth.getInstance().signInWithCredential(credential)
                                     .addOnSuccessListener(authResult -> {
                                         dialog.dismiss();
@@ -209,14 +209,14 @@ public class LoginActivity extends AppCompatActivity {
 
                         @Override
                         public void onVerificationFailed(@NonNull FirebaseException e) {
-                            progressBarPhone.setVisibility(View.GONE);
+                            if (progressBarPhone != null) progressBarPhone.setVisibility(View.GONE);
                             btnSendCode.setEnabled(true);
                             Toast.makeText(LoginActivity.this, "SMS gönderme hatası: " + e.getLocalizedMessage(), Toast.LENGTH_LONG).show();
                         }
 
                         @Override
                         public void onCodeSent(@NonNull String verId, @NonNull PhoneAuthProvider.ForceResendingToken token) {
-                            progressBarPhone.setVisibility(View.GONE);
+                            if (progressBarPhone != null) progressBarPhone.setVisibility(View.GONE);
                             verificationId = verId;
                             layoutStepPhone.setVisibility(View.GONE);
                             layoutStepCode.setVisibility(View.VISIBLE);
@@ -240,18 +240,18 @@ public class LoginActivity extends AppCompatActivity {
                 return;
             }
 
-            progressBarPhone.setVisibility(View.VISIBLE);
+            if (progressBarPhone != null) progressBarPhone.setVisibility(View.VISIBLE);
             btnVerifyCode.setEnabled(false);
 
             PhoneAuthCredential credential = PhoneAuthProvider.getCredential(verificationId, code);
             FirebaseAuth.getInstance().signInWithCredential(credential)
                     .addOnSuccessListener(authResult -> {
-                        progressBarPhone.setVisibility(View.GONE);
+                        if (progressBarPhone != null) progressBarPhone.setVisibility(View.GONE);
                         dialog.dismiss();
                         checkUserRoleAndNavigate();
                     })
                     .addOnFailureListener(e -> {
-                        progressBarPhone.setVisibility(View.GONE);
+                        if (progressBarPhone != null) progressBarPhone.setVisibility(View.GONE);
                         btnVerifyCode.setEnabled(true);
                         handleAuthError(e);
                     });
@@ -261,11 +261,11 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void checkUserRoleAndNavigate() {
-        progressBar.setVisibility(View.VISIBLE);
+        if (progressBar != null) progressBar.setVisibility(View.VISIBLE);
         firebaseHelper.fetchCurrentUser(new FirebaseHelper.OnUserFetchListener() {
             @Override
             public void onSuccess(User user) {
-                progressBar.setVisibility(View.GONE);
+                if (progressBar != null) progressBar.setVisibility(View.GONE);
                 if (user != null) {
                     if (user.isBarber()) {
                         startActivity(new Intent(LoginActivity.this, BarberMainActivity.class));
@@ -281,7 +281,7 @@ public class LoginActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(String error) {
-                progressBar.setVisibility(View.GONE);
+                if (progressBar != null) progressBar.setVisibility(View.GONE);
                 // First time social/phone login user has no Firestore profile yet
                 showRoleSelectionDialog();
             }

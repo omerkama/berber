@@ -1,6 +1,7 @@
 package com.m.berber.customer;
 
 import android.app.DatePickerDialog;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -48,7 +49,12 @@ public class BookAppointmentActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_book_appointment);
 
-        targetBarber = (User) getIntent().getSerializableExtra("barber");
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            targetBarber = getIntent().getSerializableExtra("barber", User.class);
+        } else {
+            targetBarber = (User) getIntent().getSerializableExtra("barber");
+        }
+
         if (targetBarber == null) {
             Toast.makeText(this, "Berber bilgisi bulunamadı.", Toast.LENGTH_SHORT).show();
             finish();

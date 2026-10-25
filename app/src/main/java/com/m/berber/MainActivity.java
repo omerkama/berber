@@ -1,4 +1,4 @@
-// Bismillahirrahmanirrahim
+// Bismillahir Rahmanir Rahim
 // El Hamdu Lillahi Rabbul Alemin
 // Esselatu vesselamu ala rasulillah
 // Allahumme salli ala seyyidina Muhammedin
