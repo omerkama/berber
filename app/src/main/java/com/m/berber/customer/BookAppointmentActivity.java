@@ -23,6 +23,7 @@ import com.m.berber.models.ServiceItem;
 import com.m.berber.models.TimeSlot;
 import com.m.berber.models.User;
 import com.m.berber.utils.NotificationHelper;
+import com.m.berber.utils.PrayerTimeUtil;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -56,7 +57,7 @@ public class BookAppointmentActivity extends AppCompatActivity {
         }
 
         if (targetBarber == null) {
-            Toast.makeText(this, "Berber bilgisi bulunamadı.", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Salon bilgisi bulunamadı.", Toast.LENGTH_SHORT).show();
             finish();
             return;
         }
@@ -84,6 +85,13 @@ public class BookAppointmentActivity extends AppCompatActivity {
             @Override
             public void onSuccess(User user) {
                 currentUser = user;
+                // Strict Gender Check: If customer gender does not match barber gender, disallow booking
+                if (currentUser != null && targetBarber != null) {
+                    if (!currentUser.getGender().equalsIgnoreCase(targetBarber.getGender())) {
+                        Toast.makeText(BookAppointmentActivity.this, "Kadın ve Erkek bölümleri tamamen ayrıdır. Farklı cinsiyetteki salondan randevu alınamaz.", Toast.LENGTH_LONG).show();
+                        finish();
+                    }
+                }
             }
 
             @Override
@@ -124,9 +132,9 @@ public class BookAppointmentActivity extends AppCompatActivity {
                 serviceList = services;
                 List<String> serviceNames = new ArrayList<>();
                 if (services.isEmpty()) {
-                    serviceNames.add("Standart Saç Kesimi (150 TL)");
+                    serviceNames.add("Standart Hizmet (150 TL)");
                     // Default fallback service item
-                    serviceList.add(new ServiceItem("def1", "Standart Saç Kesimi", 150, 30));
+                    serviceList.add(new ServiceItem("def1", "Standart Hizmet", 150, 30));
                 } else {
                     for (ServiceItem s : services) {
                         serviceNames.add(s.getName() + " (" + s.getPrice() + " TL)");
@@ -153,7 +161,6 @@ public class BookAppointmentActivity extends AppCompatActivity {
             public void onSuccess(List<TimeSlot> slots) {
                 progressBar.setVisibility(View.GONE);
                 if (slots.isEmpty()) {
-                    // Generate default demo slots if none configured in Firestore
                     slots = createDefaultSlots();
                 }
                 tvNoSlots.setVisibility(slots.isEmpty() ? View.VISIBLE : View.GONE);
@@ -185,10 +192,17 @@ public class BookAppointmentActivity extends AppCompatActivity {
             return;
         }
 
+        // Check Prayer Time and Friday Prayer Restrictions
+        String prayerReason = PrayerTimeUtil.getPrayerRestrictionReason(selectedDate, selectedSlot.getTime());
+        if (prayerReason != null) {
+            Toast.makeText(this, prayerReason + "\nNamaz saatlerinde randevu kabul edilmemektedir.", Toast.LENGTH_LONG).show();
+            return;
+        }
+
         int servicePos = spinnerServices.getSelectedItemPosition();
         ServiceItem selectedService = (serviceList != null && servicePos >= 0 && servicePos < serviceList.size())
                 ? serviceList.get(servicePos)
-                : new ServiceItem("def", "Saç Kesimi", 150, 30);
+                : new ServiceItem("def", "Hizmet", 150, 30);
 
         String customerId = firebaseHelper.getCurrentUid();
         String customerName = currentUser != null ? currentUser.getName() : "Müşteri";
@@ -217,7 +231,7 @@ public class BookAppointmentActivity extends AppCompatActivity {
             @Override
             public void onSuccess() {
                 progressBar.setVisibility(View.GONE);
-                Toast.makeText(BookAppointmentActivity.this, "Randevu talebiniz berbere iletildi!", Toast.LENGTH_LONG).show();
+                Toast.makeText(BookAppointmentActivity.this, "Randevu talebiniz iletildi!", Toast.LENGTH_LONG).show();
                 NotificationHelper.showNotification(BookAppointmentActivity.this, "Randevu Başvurusu Oluşturuldu",
                         targetBarber.getName() + " için " + selectedDate + " " + selectedSlot.getTime() + " randevunuz alındı.");
                 finish();

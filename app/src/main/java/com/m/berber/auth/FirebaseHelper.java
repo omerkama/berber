@@ -110,8 +110,9 @@ public class FirebaseHelper {
                 .addOnFailureListener(e -> listener.onFailure(e.getMessage()));
     }
 
-    // Fetch all barbers for Customer list
-    public void fetchBarbers(OnBarbersFetchListener listener) {
+    // Fetch barbers strictly matching Customer's Gender
+    public void fetchBarbersForCustomer(String customerGender, OnBarbersFetchListener listener) {
+        String targetGender = (customerGender != null && !customerGender.isEmpty()) ? customerGender : User.GENDER_MALE;
         db.collection("users")
                 .whereEqualTo("role", User.ROLE_BARBER)
                 .get()
@@ -120,7 +121,11 @@ public class FirebaseHelper {
                     for (QueryDocumentSnapshot doc : querySnapshot) {
                         User barber = doc.toObject(User.class);
                         if (barber != null) {
-                            barbers.add(barber);
+                            // Strict gender match filter
+                            String barberGender = barber.getGender();
+                            if (targetGender.equalsIgnoreCase(barberGender)) {
+                                barbers.add(barber);
+                            }
                         }
                     }
                     listener.onSuccess(barbers);

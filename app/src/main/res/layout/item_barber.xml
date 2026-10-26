@@ -86,15 +86,46 @@
             android:textSize="13sp"
             app:drawableStartCompat="@drawable/ic_clock" />
 
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/btnBook"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="12dp"
-            android:text="@string/btn_book_appointment"
-            android:textColor="@color/white"
-            app:backgroundTint="@color/accent"
-            app:cornerRadius="8dp" />
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnBook"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/btn_book_appointment"
+                android:textColor="@color/white"
+                app:backgroundTint="@color/accent"
+                app:cornerRadius="8dp" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnChat"
+                style="@style/Widget.Material3.Button.OutlinedButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="6dp"
+                android:text="Mesaj"
+                android:textColor="@color/primary"
+                app:cornerRadius="8dp"
+                app:strokeColor="@color/divider" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnCall"
+                style="@style/Widget.Material3.Button.OutlinedButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="6dp"
+                android:text="Ara"
+                android:textColor="@color/status_approved"
+                app:cornerRadius="8dp"
+                app:strokeColor="@color/status_approved" />
+
+        </LinearLayout>
 
     </LinearLayout>
 

@@ -295,6 +295,7 @@ public class LoginActivity extends AppCompatActivity {
         View dialogView = LayoutInflater.from(this).inflate(R.layout.dialog_select_role, null);
         EditText etRoleName = dialogView.findViewById(R.id.etRoleName);
         RadioButton rbDialogBarber = dialogView.findViewById(R.id.rbDialogBarber);
+        RadioButton rbDialogFemale = dialogView.findViewById(R.id.rbDialogFemale);
 
         String defaultName = fUser.getDisplayName() != null ? fUser.getDisplayName() : "Kullanıcı";
         etRoleName.setText(defaultName);
@@ -305,13 +306,16 @@ public class LoginActivity extends AppCompatActivity {
                 .setPositiveButton("Tamam", (dialog, which) -> {
                     String name = etRoleName.getText().toString().trim();
                     boolean isBarber = rbDialogBarber.isChecked();
+                    boolean isFemale = rbDialogFemale != null && rbDialogFemale.isChecked();
                     String role = isBarber ? User.ROLE_BARBER : User.ROLE_CUSTOMER;
+                    String gender = isFemale ? User.GENDER_FEMALE : User.GENDER_MALE;
                     String email = fUser.getEmail() != null ? fUser.getEmail() : "";
                     String phone = fUser.getPhoneNumber() != null ? fUser.getPhoneNumber() : "";
 
-                    User newUser = new User(fUser.getUid(), name.isEmpty() ? defaultName : name, email, phone, role);
+                    User newUser = new User(fUser.getUid(), name.isEmpty() ? defaultName : name, email, phone, role, gender);
                     if (isBarber) {
-                        newUser.setShopName(name + " Berber Dükkanı");
+                        String defaultShopTitle = isFemale ? "Kadın Kuaför Salonu" : "Erkek Berber Dükkanı";
+                        newUser.setShopName(name + " " + defaultShopTitle);
                         newUser.setWorkingHours("09:00 - 20:00");
                     }
 

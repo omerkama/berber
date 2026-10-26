@@ -1,17 +1,25 @@
 <resources>
-    <string name="app_name">Berberim</string>
-    <string name="welcome_title">Berber Randevu Sistemi</string>
+    <string name="app_name">Berberim &amp; Kuaförüm</string>
+    <string name="welcome_title">Randevu Sistemi</string>
     <string name="login">Giriş Yap</string>
     <string name="register">Kayıt Ol</string>
     <string name="email">E-posta Adresi</string>
     <string name="password">Şifre</string>
     <string name="full_name">Ad Soyad</string>
     <string name="phone">Telefon Numarası</string>
+
+    <!-- Gender and Role -->
+    <string name="select_gender">Cinsiyetiniz:</string>
+    <string name="gender_male">Erkek</string>
+    <string name="gender_female">Kadın</string>
     <string name="select_role">Kullanıcı Rolü Seçin:</string>
     <string name="role_customer">Hizmet Alan (Müşteri)</string>
-    <string name="role_barber">Hizmet Veren (Berber)</string>
-    <string name="shop_name">Dükkan / Berber Adı</string>
-    <string name="shop_address">Dükkan Adresi</string>
+    <string name="role_barber">Hizmet Veren (Berber / Kuaför)</string>
+    <string name="role_barber_male">Erkek Berberi</string>
+    <string name="role_barber_female">Kadın Kuaförü</string>
+
+    <string name="shop_name">Dükkan / Salon Adı</string>
+    <string name="shop_address">Dükkan / Salon Adresi</string>
     <string name="working_hours">Çalışma Saatleri (Örn: 09:00 – 20:00)</string>
     <string name="no_account_register">Hesabınız yok mu? Kayıt Olun</string>
     <string name="already_have_account">Zaten hesabınız var mı? Giriş Yapın</string>
@@ -26,11 +34,11 @@
     <string name="sms_code_hint">6 Haneli SMS Kodu</string>
     <string name="btn_send_code">SMS Kodu Gönder</string>
     <string name="btn_verify_code">Kodu Doğrula &amp; Giriş Yap</string>
-    <string name="select_role_dialog_title">Hesap Rolü Seçiniz</string>
-    <string name="select_role_dialog_desc">Sisteme ilk kez giriş yapıyorsunuz. Lütfen hesabınız için rol seçiniz:</string>
+    <string name="select_role_dialog_title">Hesap Bilgileri ve Cinsiyet</string>
+    <string name="select_role_dialog_desc">Sisteme ilk kez giriş yapıyorsunuz. Lütfen cinsiyetinizi ve rolünüzü seçiniz:</string>
 
     <!-- Navigation Bottom Tabs -->
-    <string name="nav_barbers">Berberler</string>
+    <string name="nav_barbers">Berberler &amp; Kuaförler</string>
     <string name="nav_my_appointments">Randevularım</string>
     <string name="nav_barber_appointments">Gelen Randevular</string>
     <string name="nav_shop_management">Dükkan &amp; Saatler</string>
@@ -59,8 +67,8 @@
     <string name="select_date">Tarih Seçiniz:</string>
     <string name="select_time">Saat Dilimi Seçiniz:</string>
     <string name="services_offered">Sunulan Hizmetler:</string>
-    <string name="search_barber_hint">Berber veya dükkan ara…</string>
-    <string name="no_barbers_found">Kayıtlı berber bulunamadı.</string>
+    <string name="search_barber_hint">Arama yapın…</string>
+    <string name="no_barbers_found">Kayıtlı salon bulunamadı.</string>
     <string name="no_appointments_found">Kayıtlı randevu bulunamadı.</string>
     <string name="no_services_found">Henüz hizmet eklenmemiş.</string>
     <string name="no_slots_found">Müsait saat bulunamadı.</string>

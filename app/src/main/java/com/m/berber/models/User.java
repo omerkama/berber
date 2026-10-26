@@ -6,11 +6,15 @@ public class User implements Serializable {
     public static final String ROLE_CUSTOMER = "MUSTERI";
     public static final String ROLE_BARBER = "BERBER";
 
+    public static final String GENDER_MALE = "ERKEK";
+    public static final String GENDER_FEMALE = "KADIN";
+
     private String uid;
     private String name;
     private String email;
     private String phone;
     private String role; // MUSTERI or BERBER
+    private String gender; // ERKEK or KADIN
     private String shopName;
     private String shopAddress;
     private String workingHours;
@@ -19,12 +23,13 @@ public class User implements Serializable {
         // Default constructor required for Firebase Firestore
     }
 
-    public User(String uid, String name, String email, String phone, String role) {
+    public User(String uid, String name, String email, String phone, String role, String gender) {
         this.uid = uid;
         this.name = name;
         this.email = email;
         this.phone = phone;
         this.role = role;
+        this.gender = gender;
     }
 
     public String getUid() {
@@ -67,6 +72,14 @@ public class User implements Serializable {
         this.role = role;
     }
 
+    public String getGender() {
+        return gender != null ? gender : GENDER_MALE;
+    }
+
+    public void setGender(String gender) {
+        this.gender = gender;
+    }
+
     public String getShopName() {
         return shopName;
     }
@@ -93,5 +106,9 @@ public class User implements Serializable {
 
     public boolean isBarber() {
         return ROLE_BARBER.equalsIgnoreCase(this.role);
+    }
+
+    public boolean isFemale() {
+        return GENDER_FEMALE.equalsIgnoreCase(this.gender);
     }
 }

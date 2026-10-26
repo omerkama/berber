@@ -25,6 +25,7 @@ import com.m.berber.auth.FirebaseHelper;
 import com.m.berber.models.ServiceItem;
 import com.m.berber.models.TimeSlot;
 import com.m.berber.models.User;
+import com.m.berber.utils.PrayerTimeUtil;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -235,17 +236,25 @@ public class BarberShopManagementFragment extends Fragment {
 
         btnSlotDate.setOnClickListener(v -> {
             Calendar c = Calendar.getInstance();
-            new DatePickerDialog(getContext(), (view, year, month, dayOfMonth) -> {
+            new DatePickerDialog(requireContext(), (view, year, month, dayOfMonth) -> {
                 tempDate[0] = String.format(Locale.getDefault(), "%04d-%02d-%02d", year, month + 1, dayOfMonth);
                 btnSlotDate.setText("Tarih: " + tempDate[0]);
             }, c.get(Calendar.YEAR), c.get(Calendar.MONTH), c.get(Calendar.DAY_OF_MONTH)).show();
         });
 
-        new AlertDialog.Builder(getContext())
+        new AlertDialog.Builder(requireContext())
                 .setView(dialogView)
                 .setPositiveButton("Ekle", (dialog, which) -> {
                     String time = etSlotTime.getText().toString().trim();
                     if (!TextUtils.isEmpty(time)) {
+
+                        // Check Prayer Time and Friday Restrictions
+                        String prayerReason = PrayerTimeUtil.getPrayerRestrictionReason(tempDate[0], time);
+                        if (prayerReason != null) {
+                            Toast.makeText(getContext(), prayerReason + "\nNamaz ve Cuma vakitlerinde randevu saati açılamaz!", Toast.LENGTH_LONG).show();
+                            return;
+                        }
+
                         TimeSlot slot = new TimeSlot(null, currentBarber.getUid(), tempDate[0], time, true);
                         firebaseHelper.addTimeSlot(slot, new FirebaseHelper.OnActionListener() {
                             @Override

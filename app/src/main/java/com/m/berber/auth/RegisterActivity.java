@@ -1,6 +1,5 @@
 package com.m.berber.auth;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
@@ -25,8 +24,8 @@ public class RegisterActivity extends AppCompatActivity {
 
     private TextInputEditText etName, etPhone, etEmail, etPassword;
     private TextInputEditText etShopName, etShopAddress, etWorkingHours;
-    private RadioGroup rgRole;
-    private RadioButton rbBarber;
+    private RadioGroup rgRole, rgGender;
+    private RadioButton rbBarber, rbFemale;
     private LinearLayout layoutBarberExtraFields;
     private MaterialButton btnRegister;
     private TextView tvLoginRedirect;
@@ -48,7 +47,9 @@ public class RegisterActivity extends AppCompatActivity {
         etShopAddress = findViewById(R.id.etShopAddress);
         etWorkingHours = findViewById(R.id.etWorkingHours);
         rgRole = findViewById(R.id.rgRole);
+        rgGender = findViewById(R.id.rgGender);
         rbBarber = findViewById(R.id.rbBarber);
+        rbFemale = findViewById(R.id.rbFemale);
         layoutBarberExtraFields = findViewById(R.id.layoutBarberExtraFields);
         btnRegister = findViewById(R.id.btnRegister);
         tvLoginRedirect = findViewById(R.id.tvLoginRedirect);
@@ -72,6 +73,9 @@ public class RegisterActivity extends AppCompatActivity {
         String email = etEmail.getText() != null ? etEmail.getText().toString().trim() : "";
         String password = etPassword.getText() != null ? etPassword.getText().toString().trim() : "";
         boolean isBarber = rbBarber.isChecked();
+        boolean isFemale = rbFemale.isChecked();
+
+        String gender = isFemale ? User.GENDER_FEMALE : User.GENDER_MALE;
 
         if (TextUtils.isEmpty(name)) {
             etName.setError("Ad Soyad gerekli");
@@ -95,7 +99,7 @@ public class RegisterActivity extends AppCompatActivity {
         String workingHours = etWorkingHours.getText() != null ? etWorkingHours.getText().toString().trim() : "";
 
         if (isBarber && TextUtils.isEmpty(shopName)) {
-            etShopName.setError("Dükkan adı gerekli");
+            etShopName.setError("Dükkan / Salon adı gerekli");
             return;
         }
 
@@ -107,7 +111,7 @@ public class RegisterActivity extends AppCompatActivity {
                     FirebaseUser fUser = authResult.getUser();
                     if (fUser != null) {
                         String role = isBarber ? User.ROLE_BARBER : User.ROLE_CUSTOMER;
-                        User newUser = new User(fUser.getUid(), name, email, phone, role);
+                        User newUser = new User(fUser.getUid(), name, email, phone, role, gender);
                         if (isBarber) {
                             newUser.setShopName(shopName);
                             newUser.setShopAddress(shopAddress);
@@ -126,7 +130,7 @@ public class RegisterActivity extends AppCompatActivity {
                             public void onFailure(String error) {
                                 progressBar.setVisibility(View.GONE);
                                 btnRegister.setEnabled(true);
-                                Toast.makeText(RegisterActivity.this, "Profil kaydetme hatası (Firestore izni kontrol edilmeli): " + error, Toast.LENGTH_LONG).show();
+                                Toast.makeText(RegisterActivity.this, "Profil kaydetme hatası: " + error, Toast.LENGTH_LONG).show();
                             }
                         });
                     }

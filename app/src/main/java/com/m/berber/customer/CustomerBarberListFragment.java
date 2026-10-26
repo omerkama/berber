@@ -36,6 +36,7 @@ public class CustomerBarberListFragment extends Fragment {
     private BarberAdapter adapter;
     private List<User> allBarbers = new ArrayList<>();
     private FirebaseHelper firebaseHelper;
+    private String currentCustomerGender = User.GENDER_MALE;
 
     @Nullable
     @Override
@@ -65,14 +66,31 @@ public class CustomerBarberListFragment extends Fragment {
             @Override public void afterTextChanged(Editable s) {}
         });
 
-        loadBarbers();
+        loadUserAndBarbers();
 
         return view;
     }
 
-    private void loadBarbers() {
+    private void loadUserAndBarbers() {
         progressBar.setVisibility(View.VISIBLE);
-        firebaseHelper.fetchBarbers(new FirebaseHelper.OnBarbersFetchListener() {
+        firebaseHelper.fetchCurrentUser(new FirebaseHelper.OnUserFetchListener() {
+            @Override
+            public void onSuccess(User user) {
+                if (user != null) {
+                    currentCustomerGender = user.getGender();
+                }
+                loadBarbers();
+            }
+
+            @Override
+            public void onFailure(String error) {
+                loadBarbers();
+            }
+        });
+    }
+
+    private void loadBarbers() {
+        firebaseHelper.fetchBarbersForCustomer(currentCustomerGender, new FirebaseHelper.OnBarbersFetchListener() {
             @Override
             public void onSuccess(List<User> barbers) {
                 if (getContext() == null) return;
@@ -90,7 +108,7 @@ public class CustomerBarberListFragment extends Fragment {
             public void onFailure(String error) {
                 if (getContext() == null) return;
                 progressBar.setVisibility(View.GONE);
-                Toast.makeText(getContext(), "Berberler yüklenemedi: " + error, Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), "Salonlar yüklenemedi: " + error, Toast.LENGTH_SHORT).show();
             }
         });
     }

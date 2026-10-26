@@ -11,6 +11,7 @@ package com.m.berber;
 
 import android.content.Intent;
 import android.os.Bundle;
+// Suphan Allah î Azîm ve Bîhamdîhî
 
 import androidx.appcompat.app.AppCompatActivity;
 
